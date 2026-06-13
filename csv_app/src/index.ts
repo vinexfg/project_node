@@ -1,36 +1,56 @@
-import { existsSync, writeFileSync, appendFileSync } from "fs";
+import { createInterface } from "readline";
+import { validateData, generateCSV } from "./tatamento/validacao";
+import { appendFileSync } from "fs";
+import { Person } from "./Person";
 
-interface User {
-  name: string;
-  email: string;
-  phone: string;
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const question = (text: string): Promise<string> => {
+  return new Promise((resolve) => {
+    rl.question(text, resolve);
+  });
+};
+
+const name = "Rodrigo Silva2";
+const phone = "5512345678";
+const email = "rodrigo@email.com";
+
+const person = new Person({
+  name,
+  phone,
+  email,
+});
+
+const content = person.toCSV();
+
+try {
+  appendFileSync("./persons.csv", content);
+  console.log("Sucess!");
+} catch (err) {
+  console.error(err);
 }
 
-export const validateData = (data: User): string[] => {
-  const errors: string[] = [];
+const main = async () => {
+  const name = await question("Name: ");
+  const email = await question("Email: ");
+  const age = await question("Age: ");
 
-  if (!data.name.trim()) {
-    errors.push("Name is required");
-  }
+  const data = { name, email, age };
 
-  if (!data.email.includes("@")) {
-    errors.push("Invalid email");
-  }
+  const errors = validateData(data);
 
-  if (!data.phone.trim()) {
-    errors.push("Phone is required");
-  }
-
-  return errors;
-};
-
-export const generateCSV = (data: User) => {
-  const header = "name,email,phone\n";
-  const row = `${data.name},${data.email},${data.phone}\n`;
-
-  if (!existsSync("users.csv")) {
-    writeFileSync("users.csv", header + row);
+  if (errors.length > 0) {
+    console.log("\nErrors found:");
+    errors.forEach((error: string) => console.log(`${error}`));
   } else {
-    appendFileSync("users.csv", row);
+    generateCSV(data);
+    console.log("Data saved to CSV successfully!");
   }
+
+  rl.close();
 };
+
+main();
