@@ -1,5 +1,7 @@
 import { createInterface } from "readline";
 import { validateData, generateCSV } from "./tatamento/validacao";
+import { appendFileSync } from "fs";
+import { Person } from "./Person";
 
 const rl = createInterface({
   input: process.stdin,
@@ -11,6 +13,25 @@ const question = (text: string): Promise<string> => {
     rl.question(text, resolve);
   });
 };
+
+const name = "Rodrigo Silva2";
+const phone = "5512345678";
+const email = "rodrigo@email.com";
+
+const person = new Person({
+  name,
+  phone,
+  email,
+});
+
+const content = person.toCSV();
+
+try {
+  appendFileSync("./persons.csv", content);
+  console.log("Sucess!");
+} catch (err) {
+  console.error(err);
+}
 
 const main = async () => {
   const name = await question("Name: ");
