@@ -21,7 +21,7 @@ export const validateData = (persons: Person): string[] => {
 
 export const generateCSV = (persons: Person) => {
   const header = "name,email,phone\n";
-  const row = `${persons.data.name},${persons.data.email},${persons.data.phone}\n`;
+  const row = persons.toCSV() + `\n`;
 
   if (!existsSync("persons.csv")) {
     writeFileSync("persons.csv", header + row);

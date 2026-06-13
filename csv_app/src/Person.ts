@@ -8,6 +8,6 @@ export class Person {
   constructor(public data: PersonParams) {}
 
   toCSV(): string {
-    return `${this.data.name},${this.data.phone},${this.data.email}`;
+    return `${this.data.name},${this.data.email},${this.data.phone}`;
   }
 }
