@@ -3,7 +3,7 @@ import { existsSync, writeFileSync, appendFileSync } from "fs";
 interface User {
   name: string;
   email: string;
-  age: string;
+  phone: string;
 }
 
 export const validateData = (data: User): string[] => {
@@ -17,16 +17,16 @@ export const validateData = (data: User): string[] => {
     errors.push("Invalid email");
   }
 
-  if (isNaN(Number(data.age)) || Number(data.age) <= 0) {
-    errors.push("Age must be a valid number");
+  if (!data.phone.trim()) {
+    errors.push("Phone is required");
   }
 
   return errors;
 };
 
 export const generateCSV = (data: User) => {
-  const header = "name,email,age\n";
-  const row = `${data.name},${data.email},${data.age}\n`;
+  const header = "name,email,phone\n";
+  const row = `${data.name},${data.email},${data.phone}\n`;
 
   if (!existsSync("users.csv")) {
     writeFileSync("users.csv", header + row);
