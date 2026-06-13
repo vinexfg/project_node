@@ -1,3 +1,5 @@
+import { existsSync, writeFileSync, appendFileSync } from "fs";
+
 interface User {
   name: string;
   email: string;
@@ -22,9 +24,13 @@ export const validateData = (data: User): string[] => {
   return errors;
 };
 
-export const generateCSV = (data: User): string => {
-  const header = "name,email,age";
-  const row = `${data.name},${data.email},${data.age}`;
+export const generateCSV = (data: User) => {
+  const header = "name,email,age\n";
+  const row = `${data.name},${data.email},${data.age}\n`;
 
-  return `${header}${row}`;
+  if (!existsSync("users.csv")) {
+    writeFileSync("users.csv", header + row);
+  } else {
+    appendFileSync("users.csv", row);
+  }
 };
