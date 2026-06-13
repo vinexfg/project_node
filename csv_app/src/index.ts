@@ -14,6 +14,8 @@ const question = (text: string): Promise<string> => {
   });
 };
 
+// --------------------
+
 const name = "Rodrigo Silva2";
 const phone = "5512345678";
 const email = "rodrigo@email.com";
@@ -32,6 +34,8 @@ try {
 } catch (err) {
   console.error(err);
 }
+
+// --------------------
 
 const main = async () => {
   const name = await question("Name: ");
