@@ -22,8 +22,8 @@ const main = async () => {
   const errors = validateData(data);
 
   if (errors.length > 0) {
-    console.log("Errors found:");
-    errors.forEach((error: string) => console.log(` ${error}`));
+    console.log("\nErrors found:");
+    errors.forEach((error: string) => console.log(`${error}`));
   } else {
     generateCSV(data);
     console.log("Data saved to CSV successfully!");
