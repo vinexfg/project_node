@@ -26,7 +26,7 @@ const main = async () => {
     console.log("Data saved to CSV successfully!");
   } catch (err) {
     if (err instanceof Error) {
-      console.log(`\n${err.message}`);
+      console.log(`${err.message}`);
     }
   }
 
