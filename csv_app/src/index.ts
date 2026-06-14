@@ -1,6 +1,7 @@
 import { createInterface } from "readline";
-import { validateData, generateCSV } from "./validation/validate";
 import { Person } from "./Person";
+import { validateData } from "./validation/validate";
+import { generateCSV } from "./generateCSV";
 
 const rl = createInterface({
   input: process.stdin,
@@ -13,7 +14,7 @@ const question = (text: string): Promise<string> => {
   });
 };
 
-const main = async () => {
+const register = async () => {
   const name = await question("Name: ");
   const email = await question("Email: ");
   const phone = await question("Phone: ");
@@ -24,13 +25,30 @@ const main = async () => {
     validateData(data);
     generateCSV(data);
     console.log("Data saved to CSV successfully!");
-  } catch (err) {
+  } catch (err: unknown) {
     if (err instanceof Error) {
-      console.log(`${err.message}`);
+      console.error(err.message);
     }
   }
-
-  rl.close();
 };
 
-main();
+const menu = async () => {
+  console.log(" CSV App ");
+  console.log("1. New registration");
+  console.log("2. Exit");
+
+  const option = await question("Choose an option: ");
+
+  if (option === "1") {
+    await register();
+    await menu();
+  } else if (option === "2") {
+    console.log("Bye!");
+    rl.close();
+  } else {
+    console.error("Invalid option!");
+    await menu();
+  }
+};
+
+menu();
