@@ -20,14 +20,14 @@ const main = async () => {
 
   const data = new Person({ name, email, phone });
 
-  const errors = validateData(data);
-
-  if (errors.length > 0) {
-    console.log("\nErrors found:");
-    errors.forEach((error: string) => console.log(`${error}`));
-  } else {
+  try {
+    validateData(data);
     generateCSV(data);
     console.log("Data saved to CSV successfully!");
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(`\n${err.message}`);
+    }
   }
 
   rl.close();

@@ -5,9 +5,19 @@ interface PersonParams {
 }
 
 export class Person {
-  constructor(public data: PersonParams) {}
+  get name() {
+    return this.data.name;
+  }
+  get phone() {
+    return this.data.phone;
+  }
+  get email() {
+    return this.data.email;
+  }
+
+  constructor(private data: PersonParams) {}
 
   toCSV(): string {
-    return `${this.data.name},${this.data.email},${this.data.phone}`;
+    return `${this.name},${this.email},${this.phone}`;
   }
 }

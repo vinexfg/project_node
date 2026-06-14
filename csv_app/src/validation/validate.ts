@@ -4,16 +4,20 @@ import { Person } from "../Person";
 export const validateData = (persons: Person): string[] => {
   const errors: string[] = [];
 
-  if (!persons.data.name.trim()) {
+  if (!persons.name.trim()) {
     errors.push("Name is required");
   }
 
-  if (!persons.data.email.includes("@")) {
+  if (!persons.email.includes("@")) {
     errors.push("Invalid email");
   }
 
-  if (!persons.data.phone.trim()) {
+  if (!persons.phone.trim()) {
     errors.push("Phone is required");
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`Validation Error: ${errors.join(", ")}`);
   }
 
   return errors;
@@ -21,7 +25,7 @@ export const validateData = (persons: Person): string[] => {
 
 export const generateCSV = (persons: Person) => {
   const header = "name,email,phone\n";
-  const row = persons.toCSV() + `\n`;
+  const row = persons.toCSV() + "\n";
 
   if (!existsSync("persons.csv")) {
     writeFileSync("persons.csv", header + row);
