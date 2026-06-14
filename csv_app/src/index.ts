@@ -2,6 +2,7 @@ import { createInterface } from "readline";
 import { Person } from "./Person";
 import { validateData } from "./validation/validate";
 import { generateCSV } from "./generateCSV";
+import { ValidationError } from "./validation/validateError";
 
 const rl = createInterface({
   input: process.stdin,
@@ -26,8 +27,16 @@ const register = async () => {
     generateCSV(data);
     console.log("Data saved to CSV successfully!");
   } catch (err: unknown) {
+    if (err instanceof ValidationError) {
+      console.error(err.name);
+      console.error(err.message);
+      return;
+    }
+
     if (err instanceof Error) {
       console.error(err.message);
+    } else {
+      console.error(err);
     }
   }
 };
